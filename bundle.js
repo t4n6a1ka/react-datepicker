@@ -34303,7 +34303,7 @@
 /* 542 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
 
 	exports.__esModule = true;
 	exports.isEqual = exports.isAfter = exports.isBefore = exports.subYears = exports.subMonths = exports.subWeeks = exports.subDays = exports.subHours = exports.subMinutes = exports.addYears = exports.addMonths = exports.addWeeks = exports.addDays = exports.addMinutes = exports.getTime = exports.getDate = exports.getDay = exports.getYear = exports.getMonth = exports.getHours = exports.getMinutes = exports.getSeconds = exports.setYear = exports.setMonth = exports.isDate = undefined;
@@ -34757,24 +34757,31 @@
 	// ** Date Localization **
 
 	function registerLocale(localeName, localeData) {
-	  if (!window.__localeData__) {
-	    window.__localeData__ = {};
+	  var scope = typeof window !== "undefined" ? window : global;
+
+	  if (!scope.__localeData__) {
+	    scope.__localeData__ = {};
 	  }
-	  window.__localeData__[localeName] = localeData;
+	  scope.__localeData__[localeName] = localeData;
 	}
 
 	function setDefaultLocale(localeName) {
-	  window.__localeId__ = localeName;
+	  var scope = typeof window !== "undefined" ? window : global;
+
+	  scope.__localeId__ = localeName;
 	}
 
 	function getDefaultLocale() {
-	  return window.__localeId__;
+	  var scope = typeof window !== "undefined" ? window : global;
+
+	  return scope.__localeId__;
 	}
 
 	function getLocaleObject(localeSpec) {
 	  if (typeof localeSpec === "string") {
 	    // Treat it as a locale name registered by registerLocale
-	    return window.__localeData__ ? window.__localeData__[localeSpec] : null;
+	    var scope = typeof window !== "undefined" ? window : global;
+	    return scope.__localeData__ ? scope.__localeData__[localeSpec] : null;
 	  } else {
 	    // Treat it as a raw date-fns locale object
 	    return localeSpec;
@@ -34980,6 +34987,7 @@
 	  }
 	  return i;
 	}
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
 /* 543 */
@@ -43994,7 +44002,9 @@
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.handleClick = function (time) {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.state = {
+	      height: null
+	    }, _this.handleClick = function (time) {
 	      if ((_this.props.minTime || _this.props.maxTime) && (0, _date_utils.isTimeInDisabledRange)(time, _this.props) || _this.props.excludeTimes && (0, _date_utils.isTimeDisabled)(time, _this.props.excludeTimes) || _this.props.includeTimes && !(0, _date_utils.isTimeDisabled)(time, _this.props.includeTimes)) {
 	        return;
 	      }
@@ -44057,15 +44067,18 @@
 	  Time.prototype.componentDidMount = function componentDidMount() {
 	    // code to ensure selected time will always be in focus within time window when it first appears
 	    this.list.scrollTop = Time.calcCenterPosition(this.props.monthRef ? this.props.monthRef.clientHeight - this.header.clientHeight : this.list.clientHeight, this.centerLi);
+	    if (this.props.monthRef && this.header) {
+	      this.setState({
+	        height: this.props.monthRef.clientHeight - this.header.clientHeight
+	      });
+	    }
 	  };
 
 	  Time.prototype.render = function render() {
 	    var _this2 = this;
 
-	    var height = null;
-	    if (this.props.monthRef && this.header) {
-	      height = this.props.monthRef.clientHeight - this.header.clientHeight;
-	    }
+	    var height = this.state.height;
+
 
 	    return _react2.default.createElement(
 	      "div",
@@ -50384,7 +50397,7 @@
 	        _react2.default.createElement(
 	          "code",
 	          { className: "js" },
-	          "\nhandleOnBlur: function (event) {\n    const date = new Date(event.target.value);\n    if (isValid(date)) {\n      console.log(\"date: %s\", format(date, \"dd/MM/yyyy\"));\n    } else {\n      console.log(\"value: %s\", date);\n    }\n};'}\n"
+	          "\nhandleOnBlur: function (event) {\n    const date = new Date(event.target.value);\n    if (isValid(date)) {\n      console.log(\"date: %s\", format(date, \"dd/MM/yyyy\"));\n    } else {\n      console.log(\"value: %s\", date);\n    }\n};\n"
 	        ),
 	        _react2.default.createElement("br", null),
 	        _react2.default.createElement(
@@ -50554,11 +50567,6 @@
 
 	      startDate = startDate || _this.state.startDate;
 	      endDate = endDate || _this.state.endDate;
-
-	      if ((0, _isAfter2.default)(startDate, endDate)) {
-	        endDate = startDate;
-	      }
-
 	      _this.setState({ startDate: startDate, endDate: endDate });
 	    };
 
@@ -50587,7 +50595,7 @@
 	        _react2.default.createElement(
 	          "code",
 	          { className: "jsx" },
-	          "\n<DatePicker\n    selected={this.state.startDate}\n    selectsStart\n    startDate={this.state.startDate}\n    endDate={this.state.endDate}\n    onChange={this.handleChangeStart}\n/>\n\n<DatePicker\n    selected={this.state.endDate}\n    selectsEnd\n    startDate={this.state.startDate}\n    endDate={this.state.endDate}\n    onChange={this.handleChangeEnd}\n/>\n"
+	          "\n<DatePicker\n    selected={this.state.startDate}\n    selectsStart\n    startDate={this.state.startDate}\n    endDate={this.state.endDate}\n    onChange={this.handleChangeStart}\n/>\n\n<DatePicker\n    selected={this.state.endDate}\n    selectsEnd\n    startDate={this.state.startDate}\n    endDate={this.state.endDate}\n    onChange={this.handleChangeEnd}\n    minDate={this.state.startDate}\n/>\n"
 	        )
 	      ),
 	      _react2.default.createElement(
@@ -50605,7 +50613,8 @@
 	          selectsEnd: true,
 	          startDate: this.state.startDate,
 	          endDate: this.state.endDate,
-	          onChange: this.handleChangeEnd
+	          onChange: this.handleChangeEnd,
+	          minDate: this.state.startDate
 	        })
 	      )
 	    );
